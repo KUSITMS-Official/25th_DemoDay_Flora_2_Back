@@ -1,12 +1,10 @@
-package com.lookatthis.flora.security;
+package com.lookatthis.flora.config;
 
 import com.lookatthis.flora.jwt.JwtAccessDeniedHandler;
 import com.lookatthis.flora.jwt.JwtAuthenticationEntryPoint;
 import com.lookatthis.flora.jwt.JwtSecurityConfig;
 import com.lookatthis.flora.jwt.TokenProvider;
-import io.jsonwebtoken.Jwt;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -18,13 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
-    public WebSecurityConfig(
+    public SecurityConfig(
             TokenProvider tokenProvider,
             JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint,
             JwtAccessDeniedHandler jwtAccessDeniedHandler
@@ -73,7 +71,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("api/v1/user/authenticate").permitAll()
+                .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll()
+                .antMatchers("api/v1/user/login").permitAll()
                 .antMatchers("api/v1/user/signup").permitAll()
                 .anyRequest().permitAll()
 
