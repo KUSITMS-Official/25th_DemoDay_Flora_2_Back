@@ -4,6 +4,8 @@ import com.lookatthis.flora.dto.LoginDto;
 import com.lookatthis.flora.dto.TokenDto;
 import com.lookatthis.flora.jwt.JwtFilter;
 import com.lookatthis.flora.jwt.TokenProvider;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@Api(tags = {"User API"})
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -30,7 +33,8 @@ public class AuthController {
     }
 
     // 로그인
-    @PostMapping("/authenticate")
+    @ApiOperation(value = "로그인")
+    @PostMapping("/login")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
