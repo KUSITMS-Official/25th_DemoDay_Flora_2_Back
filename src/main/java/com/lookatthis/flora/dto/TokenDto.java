@@ -3,11 +3,13 @@ package com.lookatthis.flora.dto;
 import lombok.*;
 
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TokenDto {
 
-    private String token;
+    private String grantType;
+    private String accessToken;
+    private String refreshToken;
+    private Long accessTokenExpiresIn;
 }
