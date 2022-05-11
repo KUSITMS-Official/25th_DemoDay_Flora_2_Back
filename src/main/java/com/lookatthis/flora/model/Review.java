@@ -18,7 +18,7 @@ import java.util.List;
 @Entity
 @Data
 @Builder
-public class Review extends Timestamped {
+public class Review {
 
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -52,6 +52,6 @@ public class Review extends Timestamped {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "flower_shop_id")
     private FlowerShop flowerShop;
 }

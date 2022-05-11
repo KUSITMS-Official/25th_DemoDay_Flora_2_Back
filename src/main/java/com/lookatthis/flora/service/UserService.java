@@ -11,6 +11,10 @@ import com.lookatthis.flora.repository.RefreshTokenRepository;
 import com.lookatthis.flora.repository.UserRepository;
 import com.lookatthis.flora.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
+//import org.locationtech.jts.geom.Point;
+//import org.locationtech.jts.io.ParseException;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.io.ParseException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -83,7 +87,7 @@ public class UserService {
     }
 
     @Transactional
-    public User signup(UserDto userDto) {
+    public User signup(UserDto userDto) throws ParseException {
         if (userRepository.existsByLoginId(userDto.getLoginId())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
         }
@@ -111,4 +115,12 @@ public class UserService {
         return userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
     }
+
+    @Transactional
+    public void updateAddress(User user, String userAddress, Point userPoint) {
+
+        user.setUserAddress(userAddress);
+        user.setUserPoint(userPoint);
+    }
+
 }

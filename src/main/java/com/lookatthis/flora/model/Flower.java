@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,4 +24,9 @@ public class Flower {
     // unique: 중복 허용 여부 (false 일때 중복 허용)
     @Column(name = "flower_name", nullable = false)
     private String flowerName;
+
+    @OneToMany
+    @JoinColumn(name = "portfolio_id")
+    private List<Portfolio> portfolios;
+
 }

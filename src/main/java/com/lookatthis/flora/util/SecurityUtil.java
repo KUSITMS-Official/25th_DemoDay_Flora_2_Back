@@ -3,10 +3,7 @@ package com.lookatthis.flora.util;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Optional;
 
 @Slf4j
 public class SecurityUtil {
@@ -30,8 +27,6 @@ public class SecurityUtil {
         } else if (authentication.getPrincipal() instanceof String) {
             username = (String) authentication.getPrincipal();
         }
-
-        System.out.println(username);
 
         return username;
     }

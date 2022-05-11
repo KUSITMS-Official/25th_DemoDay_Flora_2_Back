@@ -49,13 +49,11 @@ public class Portfolio extends Timestamped {
     @Enumerated(value = EnumType.STRING)
     private Color color;
 
-    @OneToMany
-    private List<Flower> flowers = new ArrayList<>();
-
     @ManyToOne
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "flower_shop_id")
     private FlowerShop flowerShop;
 
-
+    @Column(name = "clip_count")
+    private int clipCount = 0;
 
 }
