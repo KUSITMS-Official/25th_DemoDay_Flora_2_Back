@@ -3,29 +3,28 @@ package com.lookatthis.flora.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties(value = {"password", "enabled", "authorities", "accountNonLocked", "accountNonExpired", "credentialsNonExpired"})
 public class User extends Timestamped {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "user_id")
     private Long id;
+
+    @JsonIgnore
+    @Column(name = "user_address", nullable = false)
+    private String userAddress;
 
     @Column(name = "login_id", length = 50, nullable = false, unique = true)
     private String loginId;
@@ -34,10 +33,10 @@ public class User extends Timestamped {
     @JsonIgnore
     private String password;
 
-    @Column(name = "username", length = 50)
+    @Column(name = "username", length = 50, nullable = false)
     private String username;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phone;
 
     @Column(name = "email")
@@ -58,48 +57,17 @@ public class User extends Timestamped {
         return getProfileImage().getBinaryStream();
     }
 
-    @Column(name = "user_address")
-    private String userAddress;
-
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+    @Column(name = "user_latitude")
+    private Double userLatitude;
+
+    @Column(name = "user_longitude")
+    private Double userLongitude;
+
+    @JsonIgnore
+    @Column(name = "user_point")
+    private Point userPoint;
+
 }
-
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @Builder.Default
-//    private List<String> roles = new ArrayList<>();
-//
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return this.roles.stream()
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
-//    }
-
-//    @Override
-//    public String getUsername() {
-//        return loginId;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
-//    }
-//
-//}

@@ -5,14 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ResponseDto {
-    String Response;
-
-    ResponseDto() {
-
-    }
-
-    public ResponseDto(String s) {
-        this.Response = s;
-    }
+// response의 부모 클래스
+public abstract class ResponseDto {
 }
