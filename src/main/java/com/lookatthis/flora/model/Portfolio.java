@@ -10,8 +10,6 @@ import javax.validation.constraints.Size;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,10 +23,11 @@ public class Portfolio extends Timestamped {
     @Column(name = "portfolio_id")
     private Long id;
 
-    // nullable: null 허용 여부
-    // unique: 중복 허용 여부 (false 일때 중복 허용)
+    @Column(name = "portfolio_name", nullable = false)
+    private String portfolioName;
+
     @Lob
-    @Column(name = "portfolio_image", nullable = false)
+    @Column(name = "portfolio_image")
     private Blob portfolioImage;
 
     public InputStream getPortfolioImageContent() throws SQLException {
@@ -48,10 +47,6 @@ public class Portfolio extends Timestamped {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Color color;
-
-    @ManyToOne
-    @JoinColumn(name = "flower_shop_id")
-    private FlowerShop flowerShop;
 
     @Column(name = "clip_count")
     private int clipCount = 0;

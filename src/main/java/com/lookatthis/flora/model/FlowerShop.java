@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -68,5 +69,10 @@ public class FlowerShop extends Timestamped {
 
     @Column(name = "clip_count")
     private int clipCount = 0;
+
+    @JsonIgnore
+    @OneToMany
+    @JoinColumn(name = "portfolio_id")
+    private List<Portfolio> portfolios;
 
 }

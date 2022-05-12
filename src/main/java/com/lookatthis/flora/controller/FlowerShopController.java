@@ -3,7 +3,6 @@ package com.lookatthis.flora.controller;
 import com.lookatthis.flora.dto.CommonResponseDto;
 import com.lookatthis.flora.dto.FlowerShopDto;
 import com.lookatthis.flora.dto.ResponseDto;
-import com.lookatthis.flora.dto.UserDto;
 import com.lookatthis.flora.model.FlowerShop;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.FlowerShopService;
@@ -16,7 +15,6 @@ import org.locationtech.jts.io.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
