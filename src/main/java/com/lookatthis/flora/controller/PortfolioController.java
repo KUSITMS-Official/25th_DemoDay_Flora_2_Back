@@ -1,17 +1,17 @@
 package com.lookatthis.flora.controller;
 
 import com.lookatthis.flora.dto.CommonResponseDto;
+import com.lookatthis.flora.dto.FlowerShopDto;
+import com.lookatthis.flora.dto.PortfolioDto;
 import com.lookatthis.flora.dto.ResponseDto;
 import com.lookatthis.flora.model.Portfolio;
 import com.lookatthis.flora.service.PortfolioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.io.ParseException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +23,13 @@ import java.util.Optional;
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
+
+    // 꽃 상품 추가
+    @ApiOperation(value = "꽃 상품 추가")
+    @PostMapping("/create")
+    public ResponseEntity<Object> createFlowerShop(@RequestBody PortfolioDto portfolioDto) {
+        return ResponseEntity.ok(portfolioService.createPortfolio(portfolioDto));
+    }
 
     // 전체 꽃 상품 정보
     @ApiOperation(value = "전체 꽃 상품")

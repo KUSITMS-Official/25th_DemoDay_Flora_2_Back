@@ -3,8 +3,6 @@ package com.lookatthis.flora.controller;
 import com.lookatthis.flora.dto.CommonResponseDto;
 import com.lookatthis.flora.dto.ResponseDto;
 import com.lookatthis.flora.model.*;
-import com.lookatthis.flora.repository.FlowerShopRepository;
-import com.lookatthis.flora.repository.PortfolioRepository;
 import com.lookatthis.flora.service.ClipService;
 import com.lookatthis.flora.service.UserService;
 import io.swagger.annotations.Api;
