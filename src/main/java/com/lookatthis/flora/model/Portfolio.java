@@ -1,5 +1,6 @@
 package com.lookatthis.flora.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import javax.validation.constraints.Size;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -50,5 +52,9 @@ public class Portfolio extends Timestamped {
 
     @Column(name = "clip_count")
     private int clipCount = 0;
+
+    @ManyToOne
+    @JoinColumn(name = "flower_shop_id", referencedColumnName = "flower_shop_id")
+    private FlowerShop flowerShop;
 
 }
