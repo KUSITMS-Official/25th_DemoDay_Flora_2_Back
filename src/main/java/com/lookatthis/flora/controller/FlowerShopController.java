@@ -3,6 +3,7 @@ package com.lookatthis.flora.controller;
 import com.lookatthis.flora.dto.CommonResponseDto;
 import com.lookatthis.flora.dto.FlowerShopDto;
 import com.lookatthis.flora.dto.ResponseDto;
+import com.lookatthis.flora.model.Flower;
 import com.lookatthis.flora.model.FlowerShop;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.FlowerShopService;
@@ -50,14 +51,14 @@ public class FlowerShopController {
         return ResponseEntity.ok().body(new CommonResponseDto<>(flowerShop));
     }
 
-    // 인기 꽃집 정보
+    // 인기 꽃집 정보 (5개)
     @ApiOperation(value = "인기 꽃집")
     @GetMapping("/hot")
-    public ResponseEntity<? extends ResponseDto> getNearFlowerShop() {
+    public ResponseEntity<? extends ResponseDto> getHotFlowerShops() {
         User user = userService.getMyInfo();
         Point point = user.getUserPoint();
-        List<FlowerShop> flowerShops = flowerShopService.getNearByFlowerShops(point.getX(), point.getY(), 0.5,5);
-        return ResponseEntity.ok().body(new CommonResponseDto<>(flowerShops));
+        List<FlowerShop> hotFlowerShops = flowerShopService.getHotFlowerShops(point.getX(), point.getY());
+        return ResponseEntity.ok().body(new CommonResponseDto<>(hotFlowerShops));
     }
 
 }

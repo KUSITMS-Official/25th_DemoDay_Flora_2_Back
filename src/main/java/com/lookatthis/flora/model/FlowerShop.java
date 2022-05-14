@@ -9,6 +9,7 @@ import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 @Entity
 @Data
 @Builder
-public class FlowerShop extends Timestamped {
+public class FlowerShop extends Timestamped implements Serializable {
 
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +61,7 @@ public class FlowerShop extends Timestamped {
     @Column(name = "flower_shop_latitude")
     private Double flowerShopLatitude;
 
-    @Column(name = "flower_shop_longtitude")
+    @Column(name = "flower_shop_longitude")
     private Double flowerShopLongitude;
 
     @JsonIgnore
@@ -69,10 +70,5 @@ public class FlowerShop extends Timestamped {
 
     @Column(name = "clip_count")
     private int clipCount = 0;
-
-    @JsonIgnore
-    @OneToMany
-    @JoinColumn(name = "portfolio_id")
-    private List<Portfolio> portfolios;
 
 }
