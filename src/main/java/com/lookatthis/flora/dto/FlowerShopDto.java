@@ -26,6 +26,7 @@ public class FlowerShopDto {
     private String flowerShopRestTime;
 
     private String flowerShopName;
+    private String flowerShopDescription;
 
     public FlowerShop toFlowerShop() throws ParseException {
         String pointWKT = String.format("POINT(%s %s)", longitude, latitude);
@@ -40,6 +41,7 @@ public class FlowerShopDto {
                 .flowerShopOpenTime(flowerShopOpenTime)
                 .flowerShopCloseTime(flowerShopCloseTime)
                 .flowerShopRestTime(flowerShopRestTime)
+                .flowerShopDescription(flowerShopDescription)
                 .build();
     }
 
