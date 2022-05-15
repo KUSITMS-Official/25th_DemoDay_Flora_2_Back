@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Blob;
@@ -50,6 +51,10 @@ public class FlowerShop extends Timestamped implements Serializable {
     @Lob
     @Column(name = "flower_shop_image")
     private Blob flowerShopImage;
+
+    @Column(name = "flower_shop_description")
+    @Size(max = 5000)
+    private String flowerShopDescription;
 
     public InputStream getFlowerShopImageContent() throws SQLException {
         if (getFlowerShopImage() == null) {

@@ -1,9 +1,7 @@
 package com.lookatthis.flora.controller;
 
-import com.lookatthis.flora.dto.CommonResponseDto;
-import com.lookatthis.flora.dto.FlowerShopDto;
-import com.lookatthis.flora.dto.PortfolioDto;
-import com.lookatthis.flora.dto.ResponseDto;
+import com.lookatthis.flora.dto.*;
+import com.lookatthis.flora.model.Color;
 import com.lookatthis.flora.model.FlowerShop;
 import com.lookatthis.flora.model.Portfolio;
 import com.lookatthis.flora.model.User;
@@ -67,10 +65,24 @@ public class PortfolioController {
     // 인기 꽃 상품 정보 (5개)
     @ApiOperation(value = "인기 꽃 상품")
     @GetMapping("/hot")
-    public ResponseEntity<?extends ResponseDto> getHotPorfolios() {
+    public ResponseEntity<?extends ResponseDto> getHotPorftolios() {
         User user = userService.getMyInfo();
         Point point = user.getUserPoint();
         List<Portfolio> portfolios = portfolioService.getHotPortfolios(point.getX(), point.getY());
+        return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
+    }
+
+    // 피드
+    @ApiOperation(value = "피드 보기(필터[거리, 색상, 가격], 정렬[최신순, 인기순, 가격순, 리뷰 평가 높은 순])")
+    @GetMapping("/filter")
+    public ResponseEntity<?extends ResponseDto> getFilterPortpolios(@RequestParam(name = "distance", required = false) Double distance,
+                                                                    @RequestParam(name = "color", required = false) Color color,
+                                                                    @RequestParam(name = "startprice", required = false) Integer startPrice,
+                                                                    @RequestParam(name = "endprice", required = false) Integer endPrice,
+                                                                    @RequestParam(name = "sort", required = false) String sort) {
+        User user = userService.getMyInfo();
+        Point point = user.getUserPoint();
+        List<Portfolio> portfolios = portfolioService.getFilterPortfolios(point.getX(), point.getY(), distance, color, startPrice, endPrice, sort);
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
 }

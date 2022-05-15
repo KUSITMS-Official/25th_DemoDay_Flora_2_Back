@@ -1,10 +1,7 @@
 package com.lookatthis.flora.service;
 
 import com.lookatthis.flora.dto.PortfolioDto;
-import com.lookatthis.flora.model.Direction;
-import com.lookatthis.flora.model.FlowerShop;
-import com.lookatthis.flora.model.Location;
-import com.lookatthis.flora.model.Portfolio;
+import com.lookatthis.flora.model.*;
 import com.lookatthis.flora.repository.FlowerShopRepository;
 import com.lookatthis.flora.repository.PortfolioRepository;
 import com.lookatthis.flora.util.GeometryUtil;
@@ -78,6 +75,48 @@ public class PortfolioService {
                         + "ORDER BY p.clip_count", Portfolio.class)
                 .setMaxResults(5);
 
+        List<Portfolio> portfolios = query.getResultList();
+        return portfolios;
+    }
+
+    // 사용자 위치 기반 피드
+    public List<Portfolio> getFilterPortfolios(Double latitude, Double longitude, Double distance, Color color, Integer startPrice, Integer endPrice, String sort) {
+
+        if(distance == null) distance = 5.0;
+        if(startPrice == null) startPrice = 0;
+        if(endPrice == null) endPrice = Integer.MAX_VALUE;
+        if(sort == null) sort = "created_date";
+
+        Location northEast = GeometryUtil
+                .calculate(latitude, longitude, distance, Direction.NORTHEAST.getBearing());
+        Location southWest = GeometryUtil
+                .calculate(latitude, longitude, distance, Direction.SOUTHWEST.getBearing());
+
+        double x1 = northEast.getLatitude();
+        double y1 = northEast.getLongitude();
+        double x2 = southWest.getLatitude();
+        double y2 = southWest.getLongitude();
+
+        String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
+        Query query;
+        if(color == null) {
+            query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
+                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id  "
+                            + "FROM flower_shop AS f, portfolio AS p "
+                            + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
+                            + "AND f.flower_shop_id = p.flower_shop_id "
+                            + "AND p.portfolio_price BETWEEN " + startPrice + " AND " + endPrice + " ORDER BY " + sort, Portfolio.class);
+        }
+        else {
+            query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
+                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id  "
+                            + "FROM flower_shop AS f, portfolio AS p "
+                            + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
+                            + "AND f.flower_shop_id = p.flower_shop_id AND p.color = :color "
+                            + "AND p.portfolio_price BETWEEN " + startPrice + " AND " + endPrice + " ORDER BY " + sort, Portfolio.class)
+                    .setParameter("color", color.toString());
+
+        }
         List<Portfolio> portfolios = query.getResultList();
         return portfolios;
     }
