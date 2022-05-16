@@ -2,6 +2,7 @@ package com.lookatthis.flora.service;
 
 import com.lookatthis.flora.dto.PortfolioDto;
 import com.lookatthis.flora.model.*;
+import com.lookatthis.flora.repository.FlowerRepository;
 import com.lookatthis.flora.repository.FlowerShopRepository;
 import com.lookatthis.flora.repository.PortfolioRepository;
 import com.lookatthis.flora.util.GeometryUtil;
@@ -19,16 +20,19 @@ import java.util.Optional;
 public class PortfolioService {
 
     private final FlowerShopRepository flowerShopRepository;
+    private final FlowerRepository flowerRepository;
     private final PortfolioRepository portfolioRepository;
     private final EntityManager em;
 
     public Portfolio createPortfolio(PortfolioDto portfolioDto) {
         FlowerShop flowerShop = flowerShopRepository.findById(portfolioDto.getFlowerShopId()).orElseThrow();
+        Flower flower = flowerRepository.findById(portfolioDto.getFlowerId()).orElseThrow();
         Portfolio portfolio = Portfolio.builder()
                 .portfolioName(portfolioDto.getPortfolioName())
                 .price(portfolioDto.getPrice())
                 .color(portfolioDto.getColor())
                 .flowerShop(flowerShop)
+                .flower(flower)
                 .portfolioDescription(portfolioDto.getPortfolioDescription())
                 .build();
         return portfolioRepository.save(portfolio);
@@ -69,7 +73,7 @@ public class PortfolioService {
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
-                        + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id "
+                        + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id "
                         + "FROM flower_shop AS f, portfolio AS p "
                         + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", f.flower_shop_point) AND f.flower_shop_id = p.flower_shop_id "
                         + "ORDER BY p.clip_count", Portfolio.class)
@@ -101,7 +105,7 @@ public class PortfolioService {
         Query query;
         if(color == null) {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
-                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id  "
+                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id , p.flower_id "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id "
@@ -109,7 +113,7 @@ public class PortfolioService {
         }
         else {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
-                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id  "
+                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id AND p.color = :color "
@@ -120,4 +124,5 @@ public class PortfolioService {
         List<Portfolio> portfolios = query.getResultList();
         return portfolios;
     }
+
 }

@@ -12,4 +12,5 @@ import java.util.List;
 @Repository
 public interface FlowerShopRepository extends JpaRepository<FlowerShop, Long> {
 
+    List<FlowerShop> findByFlowerShopAddressContaining(String word);
 }
