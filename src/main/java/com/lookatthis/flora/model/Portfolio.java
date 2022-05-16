@@ -57,4 +57,8 @@ public class Portfolio extends Timestamped {
     @JoinColumn(name = "flower_shop_id", referencedColumnName = "flower_shop_id")
     private FlowerShop flowerShop;
 
+    @ManyToOne
+    @JoinColumn(name = "flower_id", referencedColumnName = "flower_id")
+    private Flower flower;
+
 }

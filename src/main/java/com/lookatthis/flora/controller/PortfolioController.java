@@ -73,7 +73,7 @@ public class PortfolioController {
     }
 
     // 피드
-    @ApiOperation(value = "피드 보기(필터[거리, 색상, 가격], 정렬[최신순, 인기순, 가격순, 리뷰 평가 높은 순])")
+    @ApiOperation(value = "피드 보기(필터[거리, 색상, 가격], 정렬[최신순, 인기순, 가격순, 거리순, 리뷰 평가 높은 순])")
     @GetMapping("/filter")
     public ResponseEntity<?extends ResponseDto> getFilterPortpolios(@RequestParam(name = "distance", required = false) Double distance,
                                                                     @RequestParam(name = "color", required = false) Color color,
@@ -85,4 +85,5 @@ public class PortfolioController {
         List<Portfolio> portfolios = portfolioService.getFilterPortfolios(point.getX(), point.getY(), distance, color, startPrice, endPrice, sort);
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
+
 }

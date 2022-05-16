@@ -99,4 +99,5 @@ public class FlowerShopService {
         List<FlowerShop> flowerShops = query.getResultList();
         return flowerShops;
     }
+
 }

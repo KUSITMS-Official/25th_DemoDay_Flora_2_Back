@@ -12,17 +12,16 @@ import javax.persistence.*;
 @Entity
 @Data
 @Builder
-public class SearchItem {
+public class Search {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "search_item_id")
     private Long id;
 
+    @Column(name = "search_word")
+    private String searchWord;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "flower_id", nullable = false)
-    private Flower flower;
 }
