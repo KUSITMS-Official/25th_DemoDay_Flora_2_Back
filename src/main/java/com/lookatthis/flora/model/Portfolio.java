@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -60,5 +59,35 @@ public class Portfolio extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "flower_id", referencedColumnName = "flower_id")
     private Flower flower;
+
+    @Column(name = "portfolio_review_count")
+    private int reviewCount = 0;
+
+    @Column(name = "portfolio_review_sum")
+    private float portfolioReviewSum;
+
+    @Column(name = "portfolio_review_score")
+    private float portfolioReviewScore;
+
+    public void setPortfolioReview(float score){
+        this.portfolioReviewSum += score;
+        this.reviewCount += 1;
+        this.portfolioReviewScore = (portfolioReviewSum/reviewCount);
+    }
+
+    public void deleteReview(float score) {
+        this.reviewCount -= 1;
+        this.portfolioReviewSum -= score;
+
+        if(reviewCount != 0) {
+            this.portfolioReviewScore = (portfolioReviewSum / reviewCount);
+        }
+        else {
+            this.portfolioReviewScore = 0.00f;
+        }
+    }
+
+
+
 
 }

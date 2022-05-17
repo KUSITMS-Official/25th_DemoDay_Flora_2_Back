@@ -23,7 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
-    //로그인 Controller
+    // 로그인 Controller
     @ApiOperation(value = "로그인")
     @PostMapping("/login")
     public ResponseEntity<TokenDto> login(@Valid @RequestBody LoginDto loginDto) {
@@ -57,12 +57,19 @@ public class UserController {
         return ResponseEntity.ok(userService.getMyInfo());
     }
 
-    // 로그인 아이디로 유저정보 조회
+    // 로그인 아이디로 유저 정보 조회
     @ApiOperation(value = "유저 정보 조회 - 로그인 아이디")
     @GetMapping("/userInfo/{loginId}")
     public ResponseEntity<User> getUserInfo(@PathVariable String loginId) {
         return ResponseEntity.ok(userService.getUserInfo(loginId));
     }
+
+    // 회원 정보 수정
+//    @ApiOperation(value = "회원 정보 수정")
+//    @PostMapping("/update")
+//    public ResponseEntity<Object> signup(@Valid @RequestBody UserDto userDto) throws ParseException {
+//        return ResponseEntity.ok(userService.update(userDto));
+//    }
 
     // 회원 주소 저장
     @ApiOperation(value = "회원 주소 변경")

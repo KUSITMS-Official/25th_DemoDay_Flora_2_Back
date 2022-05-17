@@ -6,19 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Data
 @Builder
-public class Review {
+public class Review extends Timestamped {
 
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +25,7 @@ public class Review {
     private Long id;
 
     @Lob
-    @Column(name = "review_image", nullable = false)
+    @Column(name = "review_image")
     private Blob reviewImage;
 
     public InputStream getReviewImageContent() throws SQLException {
@@ -37,21 +35,23 @@ public class Review {
         return getReviewImage().getBinaryStream();
     }
 
-    @Column(name = "review_score", nullable = false)
-    private BigDecimal score;
+    @Column(name = "review_score")
+    private Float score;
 
-    @Column(name = "review_content", nullable = false)
-    private BigDecimal content;
+    @Column(name = "review_content")
+    @Size(max = 5000)
+    private String content;
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
     @OneToOne
+    @JoinColumn(name = "flower_shop_id")
+    private FlowerShop flowerShop;
+
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "flower_shop_id")
-    private FlowerShop flowerShop;
 }

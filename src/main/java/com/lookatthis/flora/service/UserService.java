@@ -109,6 +109,11 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
     }
 
+    // 회원 정보 수정
+//    @Transactional
+//    public Object update(UserDto userDto) {
+//    }
+
     // 로그인 아이디로 유저 정보 조회
     @Transactional(readOnly = true)
     public User getUserInfo(String loginId) {
