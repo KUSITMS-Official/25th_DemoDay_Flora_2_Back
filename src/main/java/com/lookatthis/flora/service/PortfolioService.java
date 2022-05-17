@@ -73,7 +73,8 @@ public class PortfolioService {
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
-                        + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id "
+                        + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
+                        + "p.portfolio_review_count, p.portfolio_review_score "
                         + "FROM flower_shop AS f, portfolio AS p "
                         + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", f.flower_shop_point) AND f.flower_shop_id = p.flower_shop_id "
                         + "ORDER BY p.clip_count", Portfolio.class)
@@ -105,7 +106,8 @@ public class PortfolioService {
         Query query;
         if(color == null) {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
-                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id , p.flower_id "
+                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id , p.flower_id, "
+                            + "p.portfolio_review_count, p.portfolio_review_score "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id "
@@ -113,7 +115,8 @@ public class PortfolioService {
         }
         else {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
-                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id "
+                            + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
+                            + "p.portfolio_review_count, p.portfolio_review_score "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id AND p.color = :color "

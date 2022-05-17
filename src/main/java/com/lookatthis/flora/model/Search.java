@@ -12,10 +12,10 @@ import javax.persistence.*;
 @Entity
 @Data
 @Builder
-public class Search {
+public class Search extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name = "search_item_id")
+    @Column(name = "search_id")
     private Long id;
 
     @Column(name = "search_word")

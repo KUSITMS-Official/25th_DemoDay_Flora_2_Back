@@ -13,7 +13,6 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
