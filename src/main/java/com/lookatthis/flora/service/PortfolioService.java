@@ -42,6 +42,14 @@ public class PortfolioService {
         return portfolioRepository.save(portfolio);
     }
 
+    // 꽂 상품 이미지 업로드
+    @Transactional
+    public Object setPortfolioImage(Long portfolioId, String imgPath, String imgName) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(null);
+        portfolio.setPortfolioImage(imgPath);
+        return portfolio;
+    }
+
     // 꽃 상품 할인 수정
     @Transactional
     public Object updateDiscountPortfolio(Long portfolioId, int discount) {

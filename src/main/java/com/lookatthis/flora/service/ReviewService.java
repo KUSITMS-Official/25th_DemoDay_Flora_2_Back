@@ -35,6 +35,14 @@ public class ReviewService {
         return reviewRepository.save(review);
     }
 
+    // 리뷰 이미지 업로드
+    @Transactional
+    public Object setReviewImage(Long reviewId, String imgPath, String imgName) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(null);
+        review.setReviewImages(imgPath);
+        return review;
+    }
+
     // 꽃집 리뷰 조회
     public List<Review> getFlowerShopReviews(Long flowerShopId) {
         Sort sort = Sort.by(Sort.Direction.DESC, "createdDate");

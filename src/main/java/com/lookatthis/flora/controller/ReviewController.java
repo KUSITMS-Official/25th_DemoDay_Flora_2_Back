@@ -4,13 +4,16 @@ import com.lookatthis.flora.dto.*;
 import com.lookatthis.flora.model.Review;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.ReviewService;
+import com.lookatthis.flora.service.S3Service;
 import com.lookatthis.flora.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class ReviewController {
 
     private final UserService userService;
     private final ReviewService reviewService;
+    private final S3Service s3Service;
 
     // 리뷰 저장
     @ApiOperation(value = "리뷰 저장")
@@ -28,6 +32,16 @@ public class ReviewController {
     public ResponseEntity<?extends ResponseDto> createReview(@RequestBody ReviewDto reviewDto) {
         User user = userService.getMyInfo();
         return ResponseEntity.ok().body(new CommonResponseDto<>(reviewService.createReview(user, reviewDto)));
+    }
+
+    // 리뷰 이미지 업로드
+    @ApiOperation(value = "리뷰 이미지 업로드")
+    @PostMapping("/images")
+    public ResponseEntity<Object> imageUpload(@RequestParam(name = "reviewId") Long reviewId, MultipartFile file) throws IOException {
+        String imgPath = s3Service.upload(file);
+        String imgName = file.getOriginalFilename();
+
+        return ResponseEntity.ok(reviewService.setReviewImage(reviewId, imgPath, imgName));
     }
 
     // 꽃집 리뷰 조회

@@ -64,16 +64,8 @@ public class FlowerShop extends Timestamped implements Serializable {
     @Column(name = "portfolio_count")
     private int portfolioCount = 0;
 
-    @Lob
     @Column(name = "flower_shop_image")
-    private Blob flowerShopImage;
-
-    public InputStream getFlowerShopImageContent() throws SQLException {
-        if (getFlowerShopImage() == null) {
-            return null;
-        }
-        return getFlowerShopImage().getBinaryStream();
-    }
+    private String flowerShopImage;
 
     @Column(name = "flower_shop_latitude")
     private Double flowerShopLatitude;
