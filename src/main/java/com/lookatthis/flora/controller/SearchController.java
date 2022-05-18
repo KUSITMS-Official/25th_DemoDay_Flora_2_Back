@@ -3,17 +3,12 @@ package com.lookatthis.flora.controller;
 import com.lookatthis.flora.dto.CommonResponseDto;
 import com.lookatthis.flora.dto.ResponseDto;
 import com.lookatthis.flora.model.*;
-import com.lookatthis.flora.repository.FlowerRepository;
-import com.lookatthis.flora.service.FlowerShopService;
-import com.lookatthis.flora.service.PortfolioService;
 import com.lookatthis.flora.service.SearchService;
 import com.lookatthis.flora.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Point;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +22,6 @@ public class SearchController {
 
     private final UserService userService;
     private final SearchService searchService;
-    private final FlowerRepository flowerRepository;
 
     // 꽃 저장
     @ApiOperation(value = "꽃 저장")
@@ -54,6 +48,7 @@ public class SearchController {
             portfolios = searchService.getSearchFlowerPortfolios(user, search, words[0], distance, color, startPrice, endPrice, sort);
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
+
     // 검색어 조회
     @ApiOperation(value = "검색어 조회")
     @GetMapping("/word")

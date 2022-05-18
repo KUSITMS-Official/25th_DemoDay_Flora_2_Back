@@ -21,19 +21,18 @@ import java.sql.SQLException;
 @Builder
 public class FlowerShop extends Timestamped implements Serializable {
 
-    // ID가 자동으로 생성 및 증가합니다.
+    // ID가 자동으로 생성 및 증가
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "flower_shop_id")
     private Long id;
 
-    // nullable: null 허용 여부
-    // unique: 중복 허용 여부 (false 일때 중복 허용)
-    @Column(name = "flower_shop_name", nullable = false)
+    @Column(name = "flower_shop_name")
     private String flowerShopName;
 
-    @Column(name = "flower_shop_address", nullable = false)
-    private String flowerShopAddress;
+    @Column(name = "flower_shop_description")
+    @Size(max = 5000)
+    private String flowerShopDescription;
 
     @Column(name = "flower_shop_number")
     private String flowerShopNumber;
@@ -47,13 +46,15 @@ public class FlowerShop extends Timestamped implements Serializable {
     @Column(name = "flower_shop_rest_time")
     private String flowerShopRestTime;
 
+    @Column(name = "flower_shop_address")
+    private String flowerShopAddress;
+
+    @Column(name = "clip_count")
+    private int clipCount = 0;
+
     @Lob
     @Column(name = "flower_shop_image")
     private Blob flowerShopImage;
-
-    @Column(name = "flower_shop_description")
-    @Size(max = 5000)
-    private String flowerShopDescription;
 
     public InputStream getFlowerShopImageContent() throws SQLException {
         if (getFlowerShopImage() == null) {
@@ -71,8 +72,5 @@ public class FlowerShop extends Timestamped implements Serializable {
     @JsonIgnore
     @Column(name = "flower_shop_point")
     private Point flowerShopPoint;
-
-    @Column(name = "clip_count")
-    private int clipCount = 0;
 
 }

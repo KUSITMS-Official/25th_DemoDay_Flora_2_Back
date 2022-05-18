@@ -54,7 +54,7 @@ public class SearchService {
         if(color == null) {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
                             + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
-                            + "p.portfolio_review_count, p.portfolio_review_score "
+                            + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id AND p.flower_id = :flower "
@@ -64,7 +64,7 @@ public class SearchService {
         else {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
                             + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
-                            + "p.portfolio_review_count, p.portfolio_review_score "
+                            + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id AND p.color = :color AND p.flower_id = :flower "
@@ -109,7 +109,7 @@ public class SearchService {
         if(color == null) {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
                             + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
-                            + "p.portfolio_review_count, p.portfolio_review_score "
+                            + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id AND p.flower_shop_id IN :flowerShops "
@@ -119,7 +119,7 @@ public class SearchService {
         else {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
                             + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
-                            + "p.portfolio_review_count, p.portfolio_review_score "
+                            + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id AND p.color = :color AND p.flower_shop_id IN :flowerShops "

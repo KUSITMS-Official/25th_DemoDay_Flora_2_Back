@@ -3,7 +3,6 @@ package com.lookatthis.flora.controller;
 import com.lookatthis.flora.dto.CommonResponseDto;
 import com.lookatthis.flora.dto.FlowerShopDto;
 import com.lookatthis.flora.dto.ResponseDto;
-import com.lookatthis.flora.model.Flower;
 import com.lookatthis.flora.model.FlowerShop;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.FlowerShopService;
@@ -35,7 +34,7 @@ public class FlowerShopController {
         return ResponseEntity.ok(flowerShopService.createFlowerShop(flowerShopDto));
     }
 
-    // 전체 꽃집 정보
+    // 전체 꽃집 정보 조회
     @ApiOperation(value = "전체 꽃집")
     @GetMapping("/flowershops")
     public ResponseEntity<? extends ResponseDto> getFlowerShops() {
@@ -43,8 +42,8 @@ public class FlowerShopController {
         return ResponseEntity.ok().body(new CommonResponseDto<>(flowerShops));
     }
 
-    // 꽃집 정보
-    @ApiOperation(value = "꽃집")
+    // 꽃집 ID로 꽃집 정보 조회
+    @ApiOperation(value = "꽃집 ID로 꽃집 정보 조회")
     @GetMapping("/{flowerShopId}")
     public ResponseEntity<? extends ResponseDto> getFlowerShop(@PathVariable Long flowerShopId) {
         Optional<FlowerShop> flowerShop = flowerShopService.getFlowerShop(flowerShopId);

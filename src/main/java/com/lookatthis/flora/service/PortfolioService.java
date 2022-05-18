@@ -24,6 +24,8 @@ public class PortfolioService {
     private final PortfolioRepository portfolioRepository;
     private final EntityManager em;
 
+
+    // 꽃 상품 추가
     public Portfolio createPortfolio(PortfolioDto portfolioDto) {
         FlowerShop flowerShop = flowerShopRepository.findById(portfolioDto.getFlowerShopId()).orElseThrow();
         Flower flower = flowerRepository.findById(portfolioDto.getFlowerId()).orElseThrow();
@@ -38,6 +40,16 @@ public class PortfolioService {
         return portfolioRepository.save(portfolio);
     }
 
+    // 꽃 상품 할인 수정
+    @Transactional
+    public Object updateDiscountPortfolio(Long portfolioId, int discount) {
+        Portfolio portfolio = portfolioRepository.findById(portfolioId).orElseThrow(null);
+        portfolio.setDiscount(discount);
+        portfolio.setDiscountPrice(portfolio.getPrice()*(100-discount)/100);
+        return portfolio;
+    }
+
+    // 전체 꽃 상품 정보 조회
     public List<Portfolio> getPortfolios() {
 
         List<Portfolio> portfolios = portfolioRepository.findAll();
@@ -45,15 +57,17 @@ public class PortfolioService {
 
     }
 
-    public Optional<Portfolio> getPortfolio(Long portfolioId) {
+    // 꽃 상품 ID로 꽃 상품 정보 조회
+    public Optional<Portfolio> getPortfoliosByItem(Long portfolioId) {
 
         Optional<Portfolio> portfolio = portfolioRepository.findById(portfolioId);
         return portfolio;
 
     }
 
+    // 꽃집 ID로 꽃 상품 정보 조회
     @Transactional
-    public List<Portfolio> getAllPortfolioByShop(Long flowerShopId) {
+    public List<Portfolio> getPortfoliosByShop(Long flowerShopId) {
         List<Portfolio> portfolios = portfolioRepository.findAllByFlowerShopId(flowerShopId);
         return portfolios;
     }
@@ -74,10 +88,36 @@ public class PortfolioService {
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
                         + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
-                        + "p.portfolio_review_count, p.portfolio_review_score "
+                        + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                         + "FROM flower_shop AS f, portfolio AS p "
                         + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", f.flower_shop_point) AND f.flower_shop_id = p.flower_shop_id "
                         + "ORDER BY p.clip_count", Portfolio.class)
+                .setMaxResults(5);
+
+        List<Portfolio> portfolios = query.getResultList();
+        return portfolios;
+    }
+
+    // 사용자 위치 기반 할인 꽃 상품
+    @Transactional(readOnly = true)
+    public List<Portfolio> getDiscountPortfolios(Double latitude, Double longitude) {
+        Location northEast = GeometryUtil
+                .calculate(latitude, longitude, 5.0, Direction.NORTHEAST.getBearing());
+        Location southWest = GeometryUtil
+                .calculate(latitude, longitude, 5.0, Direction.SOUTHWEST.getBearing());
+
+        double x1 = northEast.getLatitude();
+        double y1 = northEast.getLongitude();
+        double x2 = southWest.getLatitude();
+        double y2 = southWest.getLongitude();
+
+        String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
+        Query query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
+                        + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
+                        + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
+                        + "FROM flower_shop AS f, portfolio AS p "
+                        + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", f.flower_shop_point) AND f.flower_shop_id = p.flower_shop_id "
+                        + "AND p.discount <> 0 ", Portfolio.class)
                 .setMaxResults(5);
 
         List<Portfolio> portfolios = query.getResultList();
@@ -107,7 +147,7 @@ public class PortfolioService {
         if(color == null) {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
                             + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id , p.flower_id, "
-                            + "p.portfolio_review_count, p.portfolio_review_score "
+                            + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id "
@@ -116,7 +156,7 @@ public class PortfolioService {
         else {
             query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
                             + "p.portfolio_description, p.portfolio_price, p.color, p.clip_count, p.created_date, p.last_modified_date, p.flower_shop_id, p.flower_id, "
-                            + "p.portfolio_review_count, p.portfolio_review_score "
+                            + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                             + "FROM flower_shop AS f, portfolio AS p "
                             + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) "
                             + "AND f.flower_shop_id = p.flower_shop_id AND p.color = :color "

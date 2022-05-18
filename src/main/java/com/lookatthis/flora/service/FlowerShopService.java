@@ -20,13 +20,14 @@ public class FlowerShopService {
 
     private final FlowerShopRepository flowerShopRepository;
     private final EntityManager em;
-    // Sort sort = Sort.by(Sort.Direction.DESC, userAddress);
 
+    // 꽃집 추가
     public FlowerShop createFlowerShop(FlowerShopDto flowerShopDto) throws ParseException {
         FlowerShop flowerShop = flowerShopDto.toFlowerShop();
         return flowerShopRepository.save(flowerShop);
     }
 
+    // 전체 꽃집 정보 조회
     public List<FlowerShop> getFlowerShops() {
 
         List<FlowerShop> flowerShops = flowerShopRepository.findAll();
@@ -34,6 +35,7 @@ public class FlowerShopService {
 
     }
 
+    // 꽃집 ID로 꽃집 정보 조회
     public Optional<FlowerShop> getFlowerShop(Long shopId) {
 
         Optional<FlowerShop> flowerShop = flowerShopRepository.findById(shopId);
@@ -77,7 +79,7 @@ public class FlowerShopService {
         return flowerShops;
     }
 
-    // 사용자 위치 기반 인기 꽃집
+    // 사용자 위치 기반 인기 꽃집 (5개)
     @Transactional(readOnly = true)
     public List<FlowerShop> getHotFlowerShops(Double latitude, Double longitude) {
         Location northEast = GeometryUtil

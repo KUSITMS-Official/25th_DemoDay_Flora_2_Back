@@ -2,7 +2,6 @@ package com.lookatthis.flora.controller;
 
 import com.lookatthis.flora.dto.*;
 import com.lookatthis.flora.model.Review;
-import com.lookatthis.flora.model.Search;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.ReviewService;
 import com.lookatthis.flora.service.UserService;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RequiredArgsConstructor
