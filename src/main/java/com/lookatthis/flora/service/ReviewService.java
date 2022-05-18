@@ -22,14 +22,16 @@ public class ReviewService {
     @Transactional
     public Object createReview(User user, ReviewDto reviewDto) {
         Portfolio portfolio = portfolioRepository.findById(reviewDto.getPortfolioId()).orElseThrow();
+        FlowerShop flowerShop = portfolio.getFlowerShop();
         Review review = Review.builder()
                 .content(reviewDto.getContent())
                 .score(reviewDto.getScore())
                 .user(user)
                 .portfolio(portfolio)
-                .flowerShop(portfolio.getFlowerShop())
+                .flowerShop(flowerShop)
                 .build();
         portfolio.setPortfolioReview(reviewDto.getScore());
+        flowerShop.setFlowerShopReview(reviewDto.getScore());
         return reviewRepository.save(review);
     }
 
