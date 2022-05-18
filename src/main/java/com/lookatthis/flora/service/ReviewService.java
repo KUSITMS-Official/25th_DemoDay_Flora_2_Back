@@ -2,7 +2,6 @@ package com.lookatthis.flora.service;
 
 import com.lookatthis.flora.dto.ReviewDto;
 import com.lookatthis.flora.model.*;
-import com.lookatthis.flora.repository.FlowerShopRepository;
 import com.lookatthis.flora.repository.PortfolioRepository;
 import com.lookatthis.flora.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.List;
 
 @Service

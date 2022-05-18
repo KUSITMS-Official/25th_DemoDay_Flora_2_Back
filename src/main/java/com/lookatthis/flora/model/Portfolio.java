@@ -1,6 +1,5 @@
 package com.lookatthis.flora.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +17,8 @@ import java.sql.SQLException;
 @Data
 @Builder
 public class Portfolio extends Timestamped {
-    // ID가 자동으로 생성 및 증가합니다.
+
+    // ID가 자동으로 생성 및 증가.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "portfolio_id")
@@ -26,6 +26,31 @@ public class Portfolio extends Timestamped {
 
     @Column(name = "portfolio_name", nullable = false)
     private String portfolioName;
+
+    @Column(name = "portfolio_description")
+    @Size(max = 5000)
+    private String portfolioDescription;
+
+    @Column(name = "portfolio_price")
+    private int price;
+
+    @Column(name = "discount")
+    private int discount = 0;
+
+    @Column(name = "discount_price")
+    private int discountPrice = 0;
+
+    @Column(name = "portfolio_review_count")
+    private int reviewCount = 0;
+
+    @Column(name = "portfolio_review_sum")
+    private float portfolioReviewSum;
+
+    @Column(name = "portfolio_review_score")
+    private float portfolioReviewScore;
+
+    @Column(name = "clip_count")
+    private int clipCount = 0;
 
     @Lob
     @Column(name = "portfolio_image")
@@ -38,19 +63,9 @@ public class Portfolio extends Timestamped {
         return getPortfolioImage().getBinaryStream();
     }
 
-    @Column(name = "portfolio_description")
-    @Size(max = 5000)
-    private String portfolioDescription;
-
-    @Column(name = "portfolio_price")
-    private int price;
-
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private Color color;
-
-    @Column(name = "clip_count")
-    private int clipCount = 0;
 
     @ManyToOne
     @JoinColumn(name = "flower_shop_id", referencedColumnName = "flower_shop_id")
@@ -59,15 +74,6 @@ public class Portfolio extends Timestamped {
     @ManyToOne
     @JoinColumn(name = "flower_id", referencedColumnName = "flower_id")
     private Flower flower;
-
-    @Column(name = "portfolio_review_count")
-    private int reviewCount = 0;
-
-    @Column(name = "portfolio_review_sum")
-    private float portfolioReviewSum;
-
-    @Column(name = "portfolio_review_score")
-    private float portfolioReviewScore;
 
     public void setPortfolioReview(float score){
         this.portfolioReviewSum += score;
@@ -86,8 +92,5 @@ public class Portfolio extends Timestamped {
             this.portfolioReviewScore = 0.00f;
         }
     }
-
-
-
 
 }

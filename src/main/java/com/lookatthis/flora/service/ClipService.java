@@ -19,18 +19,21 @@ public class ClipService {
     private final FlowerShopRepository flowerShopRepository;
     private final PortfolioRepository portfolioRepository;
 
+    // 사용자 꽃집 찜 목록 조회
     @Transactional
     public List<ClipShop> findShopByUserId(Long userId) {
         return clipShopRepository.findAllByUserId(userId);
     }
 
+    // 사용자 꽃 상품 목록 조회
     @Transactional
     public List<ClipItem> findItemByUserId(Long userId) {
         return clipItemRepository.findAllByUserId(userId);
     }
 
+    // 사용자 꽃집 찜 추가
     @Transactional
-    public ClipShop createShop(User user, Long shopId) {
+    public ClipShop createShopClip(User user, Long shopId) {
         FlowerShop flowerShop = flowerShopRepository.findById(shopId).get();
         ClipShop clipShop = ClipShop.builder().user(user).flowerShop(flowerShop).build();
 
@@ -39,16 +42,18 @@ public class ClipService {
         return clipShopRepository.save(clipShop);
     }
 
+    // 사용자 꽃집 찜 삭제
     @Transactional
-    public void deleteShop(Long userId, Long flowerShopId) {
+    public void deleteShopClip(Long userId, Long flowerShopId) {
         clipShopRepository.deleteByUserIdAndFlowerShopId(userId, flowerShopId);
         FlowerShop flowerShop = flowerShopRepository.findById(flowerShopId).get();
         flowerShop.setClipCount(flowerShop.getClipCount() - 1); // 찜 수 감소
 
     }
 
+    // 사용자 꽃 상품 찜 추가
     @Transactional
-    public ClipItem createItem(User user, Long portfolioId) {
+    public ClipItem createItemClip(User user, Long portfolioId) {
         Portfolio portfolio = portfolioRepository.findById(portfolioId).get();
         ClipItem clipItem = ClipItem.builder().user(user).portfolio(portfolio).build();
 
@@ -57,8 +62,9 @@ public class ClipService {
         return clipItemRepository.save(clipItem);
     }
 
+    // 사용자 꽃 상품 찜 삭제
     @Transactional
-    public void deleteItem(Long userId, Long portfolioId) {
+    public void deleteItemClip(Long userId, Long portfolioId) {
         clipItemRepository.deleteByUserIdAndPortfolioId(userId, portfolioId);
         Portfolio portfolio = portfolioRepository.findById(portfolioId).get();
         portfolio.setClipCount(portfolio.getClipCount() - 1); // 찜 수 감소

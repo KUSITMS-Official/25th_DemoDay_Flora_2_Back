@@ -18,11 +18,18 @@ import java.sql.SQLException;
 @Builder
 public class Review extends Timestamped {
 
-    // ID가 자동으로 생성 및 증가합니다.
+    // ID가 자동으로 생성 및 증가.
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "review_id")
     private Long id;
+
+    @Column(name = "review_score")
+    private Float score;
+
+    @Column(name = "review_content")
+    @Size(max = 5000)
+    private String content;
 
     @Lob
     @Column(name = "review_image")
@@ -34,13 +41,6 @@ public class Review extends Timestamped {
         }
         return getReviewImage().getBinaryStream();
     }
-
-    @Column(name = "review_score")
-    private Float score;
-
-    @Column(name = "review_content")
-    @Size(max = 5000)
-    private String content;
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")

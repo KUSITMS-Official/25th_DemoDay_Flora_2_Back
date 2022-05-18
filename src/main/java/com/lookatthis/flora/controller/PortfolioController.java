@@ -2,7 +2,6 @@ package com.lookatthis.flora.controller;
 
 import com.lookatthis.flora.dto.*;
 import com.lookatthis.flora.model.Color;
-import com.lookatthis.flora.model.FlowerShop;
 import com.lookatthis.flora.model.Portfolio;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.FlowerShopService;
@@ -12,8 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.io.ParseException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,39 +25,44 @@ public class PortfolioController {
 
     private final PortfolioService portfolioService;
     private final UserService userService;
-    private final FlowerShopService flowerShopService;
 
     // 꽃 상품 추가
     @ApiOperation(value = "꽃 상품 추가")
     @PostMapping("/create")
-    public ResponseEntity<Object> createFlowerShop(@RequestBody PortfolioDto portfolioDto) {
+    public ResponseEntity<Object> createPortfolio(@RequestBody PortfolioDto portfolioDto) {
         return ResponseEntity.ok(portfolioService.createPortfolio(portfolioDto));
     }
 
-    // 전체 꽃 상품 정보
-    @ApiOperation(value = "전체 꽃 상품")
+    // 꽃 상품 할인 수정
+    @ApiOperation(value = "꽃 상품 할인 수정")
+    @PostMapping("/discount")
+    public ResponseEntity<Object> updateDiscountPortfolio(@RequestParam(name = "portfolioId") Long portfolioId, @RequestParam(name = "discount") int discount) {
+        return ResponseEntity.ok(portfolioService.updateDiscountPortfolio(portfolioId, discount));
+    }
+
+    // 전체 꽃 상품 정보 조회
+    @ApiOperation(value = "전체 꽃 상품 조회")
     @GetMapping("/")
     public ResponseEntity<? extends ResponseDto> getPortfolios() {
         List<Portfolio> portfolios = portfolioService.getPortfolios();
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
 
-    // 꽃 상품 정보
-    @ApiOperation(value = "꽃 상품")
+    // 꽃 상품 ID로 꽃 상품 정보 조회
+    @ApiOperation(value = "꽃 상품 ID로 꽃 상품 정보 조회")
     @GetMapping("/{portfolioId}")
-    public ResponseEntity<? extends ResponseDto> getPortfolio(@PathVariable Long portfolioId) {
-        Optional<Portfolio> portfolio = portfolioService.getPortfolio(portfolioId);
+    public ResponseEntity<? extends ResponseDto> getPortfoliosByItem(@PathVariable Long portfolioId) {
+        Optional<Portfolio> portfolio = portfolioService.getPortfoliosByItem(portfolioId);
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolio));
     }
 
-    // 꽃 상품 정보
-    @ApiOperation(value = "가게의 꽃 상품")
+    // 꽃집 ID로 꽃 상품 정보 조회
+    @ApiOperation(value = "꽃집 ID로 꽃 상품 정보 조회")
     @GetMapping("/shop/{flowerShopId}")
-    public ResponseEntity<? extends ResponseDto> getAllPortfolioByShop(@PathVariable Long flowerShopId) {
-        List<Portfolio> portfolios = portfolioService.getAllPortfolioByShop(flowerShopId);
+    public ResponseEntity<? extends ResponseDto> getPortfoliosByShop(@PathVariable Long flowerShopId) {
+        List<Portfolio> portfolios = portfolioService.getPortfoliosByShop(flowerShopId);
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
-
 
     // 인기 꽃 상품 정보 (5개)
     @ApiOperation(value = "인기 꽃 상품")
@@ -69,6 +71,16 @@ public class PortfolioController {
         User user = userService.getMyInfo();
         Point point = user.getUserPoint();
         List<Portfolio> portfolios = portfolioService.getHotPortfolios(point.getX(), point.getY());
+        return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
+    }
+
+    // 할인 꽃 상품 정보 (5개)
+    @ApiOperation(value = "할인 꽃 상품")
+    @GetMapping("/sale")
+    public ResponseEntity<?extends ResponseDto> getDiscountPortfolios() {
+        User user = userService.getMyInfo();
+        Point point = user.getUserPoint();
+        List<Portfolio> portfolios = portfolioService.getDiscountPortfolios(point.getX(), point.getY());
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
 

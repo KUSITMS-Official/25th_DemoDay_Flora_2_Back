@@ -6,6 +6,7 @@ import com.lookatthis.flora.model.*;
 import com.lookatthis.flora.service.ClipService;
 import com.lookatthis.flora.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +26,10 @@ public class ClipController {
     private final UserService userService;
     private final ClipService clipService;
 
+    // 사용자 꽃집 찜 목록 조회
+    @ApiOperation(value = "사용자 꽃집 찜 목록 조회")
     @GetMapping("/shop")
-    public ResponseEntity<? extends ResponseDto> getShopClip() {
+    public ResponseEntity<? extends ResponseDto> getShopClips() {
         User user = userService.getMyInfo();
         List<ClipShop> clipShops = clipService.findShopByUserId(user.getId());
         List<FlowerShop> flowerShops = new ArrayList<>();
@@ -35,24 +38,29 @@ public class ClipController {
         return ResponseEntity.ok().body(new CommonResponseDto<>(flowerShops));
     }
 
+    // 사용자 꽃집 찜 추가
+    @ApiOperation(value = "사용자 꽃집 찜 추가")
     @GetMapping("/shop/{flowerShopId}")
     public ResponseEntity createShopClip(@PathVariable("flowerShopId") Long flowerShopId) {
         User user = userService.getMyInfo();
-        clipService.createShop(user, flowerShopId);
-
+        clipService.createShopClip(user, flowerShopId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    // 사용자 꽃집 찜 삭제
+    @ApiOperation(value = "사용자 꽃집 찜 삭제")
     @GetMapping("/shop/unclip/{flowerShopId}")
     public ResponseEntity deleteShopClip(@PathVariable("flowerShopId") Long flowerShopId) {
         User user = userService.getMyInfo();
-        clipService.deleteShop(user.getId(), flowerShopId);
+        clipService.deleteShopClip(user.getId(), flowerShopId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    // 사용자 꽃 상품 찜 목록 조회
+    @ApiOperation(value = "사용자 꽃 상품 찜 목록 조회")
     @GetMapping("/item")
-    public ResponseEntity<? extends ResponseDto> getItemClip() {
+    public ResponseEntity<? extends ResponseDto> getItemClips() {
         User user = userService.getMyInfo();
         List<ClipItem> clipItems = clipService.findItemByUserId(user.getId());
         List<Portfolio> portfolios = new ArrayList<>();
@@ -61,18 +69,21 @@ public class ClipController {
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
 
+    // 사용자 꽃 상품 찜 추가
+    @ApiOperation(value = "사용자 꽃 상품 찜 추가")
     @GetMapping("/item/{portfolioId}")
     public ResponseEntity createItemClip(@PathVariable("portfolioId") Long portfolioId) {
         User user = userService.getMyInfo();
-        clipService.createItem(user, portfolioId);
-
+        clipService.createItemClip(user, portfolioId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    // 사용자 꽃 상품 찜 삭제
+    @ApiOperation(value = "사용자 꽃 상품 찜 삭제")
     @GetMapping("/item/unclip/{portfolioId}")
     public ResponseEntity deleteItemClip(@PathVariable("portfolioId") Long portfolioId) {
         User user = userService.getMyInfo();
-        clipService.deleteItem(user.getId(), portfolioId);
+        clipService.deleteItemClip(user.getId(), portfolioId);
 
         return new ResponseEntity(HttpStatus.OK);
     }
