@@ -6,6 +6,7 @@ import com.lookatthis.flora.model.Portfolio;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.FlowerShopService;
 import com.lookatthis.flora.service.PortfolioService;
+import com.lookatthis.flora.service.S3Service;
 import com.lookatthis.flora.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,12 +28,23 @@ public class PortfolioController {
 
     private final PortfolioService portfolioService;
     private final UserService userService;
+    private final S3Service s3Service;
 
     // 꽃 상품 추가
     @ApiOperation(value = "꽃 상품 추가")
     @PostMapping("/create")
     public ResponseEntity<Object> createPortfolio(@RequestBody PortfolioDto portfolioDto) {
         return ResponseEntity.ok(portfolioService.createPortfolio(portfolioDto));
+    }
+
+    // 꽃 상품 이미지 업로드
+    @ApiOperation(value = "꽃 상품 이미지 업로드")
+    @PostMapping("/images")
+    public ResponseEntity<Object> imageUpload(@RequestParam(name = "portfolioId") Long portfolioId, MultipartFile file) throws IOException {
+        String imgPath = s3Service.upload(file);
+        String imgName = file.getOriginalFilename();
+
+        return ResponseEntity.ok(portfolioService.setPortfolioImage(portfolioId, imgPath, imgName));
     }
 
     // 꽃 상품 할인 수정

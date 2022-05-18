@@ -10,6 +10,8 @@ import javax.validation.constraints.Size;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,16 +33,8 @@ public class Review extends Timestamped {
     @Size(max = 5000)
     private String content;
 
-    @Lob
     @Column(name = "review_image")
-    private Blob reviewImage;
-
-    public InputStream getReviewImageContent() throws SQLException {
-        if (getReviewImage() == null) {
-            return null;
-        }
-        return getReviewImage().getBinaryStream();
-    }
+    private String reviewImages;
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")

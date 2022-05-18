@@ -27,6 +27,14 @@ public class FlowerShopService {
         return flowerShopRepository.save(flowerShop);
     }
 
+    // 꽂집 이미지 업로드
+    @Transactional
+    public Object setFlowerShopImage(Long flowerShopId, String imgPath, String imgName) {
+        FlowerShop flowerShop = flowerShopRepository.findById(flowerShopId).orElseThrow(null);
+        flowerShop.setFlowerShopImage(imgPath);
+        return flowerShop;
+    }
+
     // 전체 꽃집 정보 조회
     public List<FlowerShop> getFlowerShops() {
 

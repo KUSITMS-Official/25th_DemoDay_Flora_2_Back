@@ -52,16 +52,8 @@ public class Portfolio extends Timestamped {
     @Column(name = "clip_count")
     private int clipCount = 0;
 
-    @Lob
     @Column(name = "portfolio_image")
-    private Blob portfolioImage;
-
-    public InputStream getPortfolioImageContent() throws SQLException {
-        if (getPortfolioImage() == null) {
-            return null;
-        }
-        return getPortfolioImage().getBinaryStream();
-    }
+    private String portfolioImage;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
