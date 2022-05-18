@@ -44,10 +44,10 @@ public class Portfolio extends Timestamped {
     private int reviewCount = 0;
 
     @Column(name = "portfolio_review_sum")
-    private float portfolioReviewSum;
+    private float reviewSum;
 
     @Column(name = "portfolio_review_score")
-    private float portfolioReviewScore;
+    private float reviewScore;
 
     @Column(name = "clip_count")
     private int clipCount = 0;
@@ -76,20 +76,20 @@ public class Portfolio extends Timestamped {
     private Flower flower;
 
     public void setPortfolioReview(float score){
-        this.portfolioReviewSum += score;
+        this.reviewSum += score;
         this.reviewCount += 1;
-        this.portfolioReviewScore = (portfolioReviewSum/reviewCount);
+        this.reviewScore = (reviewSum/reviewCount);
     }
 
     public void deleteReview(float score) {
         this.reviewCount -= 1;
-        this.portfolioReviewSum -= score;
+        this.reviewSum -= score;
 
         if(reviewCount != 0) {
-            this.portfolioReviewScore = (portfolioReviewSum / reviewCount);
+            this.reviewScore = (reviewSum / reviewCount);
         }
         else {
-            this.portfolioReviewScore = 0.00f;
+            this.reviewScore = 0.00f;
         }
     }
 

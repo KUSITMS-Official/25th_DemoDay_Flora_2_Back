@@ -26,6 +26,7 @@ public class PortfolioService {
 
 
     // 꽃 상품 추가
+    @Transactional
     public Portfolio createPortfolio(PortfolioDto portfolioDto) {
         FlowerShop flowerShop = flowerShopRepository.findById(portfolioDto.getFlowerShopId()).orElseThrow();
         Flower flower = flowerRepository.findById(portfolioDto.getFlowerId()).orElseThrow();
@@ -37,6 +38,7 @@ public class PortfolioService {
                 .flower(flower)
                 .portfolioDescription(portfolioDto.getPortfolioDescription())
                 .build();
+        flowerShop.setPortfolioCount(flowerShop.getPortfolioCount() + 1); // 포트폴리오 수 증가
         return portfolioRepository.save(portfolio);
     }
 

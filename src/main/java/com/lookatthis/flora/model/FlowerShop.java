@@ -49,8 +49,20 @@ public class FlowerShop extends Timestamped implements Serializable {
     @Column(name = "flower_shop_address")
     private String flowerShopAddress;
 
+    @Column(name = "flower_shop_review_count")
+    private int reviewCount = 0;
+
+    @Column(name = "flower_shop_review_sum")
+    private float reviewSum;
+
+    @Column(name = "flower_shop_review_score")
+    private float reviewScore;
+
     @Column(name = "clip_count")
     private int clipCount = 0;
+
+    @Column(name = "portfolio_count")
+    private int portfolioCount = 0;
 
     @Lob
     @Column(name = "flower_shop_image")
@@ -72,5 +84,23 @@ public class FlowerShop extends Timestamped implements Serializable {
     @JsonIgnore
     @Column(name = "flower_shop_point")
     private Point flowerShopPoint;
+
+    public void setFlowerShopReview(float score){
+        this.reviewSum += score;
+        this.reviewCount += 1;
+        this.reviewScore = (reviewSum/reviewCount);
+    }
+
+    public void deleteReview(float score) {
+        this.reviewCount -= 1;
+        this.reviewSum -= score;
+
+        if(reviewCount != 0) {
+            this.reviewScore = (reviewSum / reviewCount);
+        }
+        else {
+            this.reviewScore = 0.00f;
+        }
+    }
 
 }
