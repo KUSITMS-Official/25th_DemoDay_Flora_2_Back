@@ -11,5 +11,4 @@ public class FloraApplication {
     public static void main(String[] args) {
         SpringApplication.run(FloraApplication.class, args);
     }
-
 }

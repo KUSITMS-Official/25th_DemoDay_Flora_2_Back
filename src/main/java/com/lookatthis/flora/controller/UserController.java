@@ -3,6 +3,7 @@ package com.lookatthis.flora.controller;
 import com.lookatthis.flora.dto.*;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.UserService;
+import com.lookatthis.flora.storage.UserStorage.UserStorage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -14,9 +15,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/user")
 @Api(tags = {"User API"})
 public class UserController {
@@ -81,6 +84,13 @@ public class UserController {
         userService.updateAddress(user, userAddress, userPoint);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    //fetchAllUsers
+    @GetMapping("/fetchAllUsers")
+    public Set<String> fetchAll() {
+        return UserStorage.getInstance().getUsers();
+    }
+
 
 }
 
