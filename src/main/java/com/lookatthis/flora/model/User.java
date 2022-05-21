@@ -23,11 +23,11 @@ public class User extends Timestamped {
     private Long id;
 
     @JsonIgnore
-    @Column(name = "user_address", nullable = false)
+    @Column(name = "user_address")
     private String userAddress;
 
-    @Column(name = "login_id", length = 50, nullable = false, unique = true)
-    private String loginId;
+    @Column(name = "email", length = 50, nullable = false, unique = true)
+    private String email;
 
     @Column(name = "password", length = 100, nullable = false, unique = true)
     @JsonIgnore
@@ -38,9 +38,6 @@ public class User extends Timestamped {
 
     @Column(name = "phone_number", nullable = false)
     private String phone;
-
-    @Column(name = "email")
-    private String email;
 
     @Enumerated(EnumType.STRING)
     @Column
