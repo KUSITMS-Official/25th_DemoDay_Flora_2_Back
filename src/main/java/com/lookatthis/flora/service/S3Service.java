@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 
 @Service
 @NoArgsConstructor
@@ -65,22 +64,4 @@ public class S3Service {
         return s3Client.getUrl(bucket, fileName).toString();
     }
 
-    // get presigned URL
-    public String getFileURL(String fileName) {
-        System.out.println("넘어오는 파일명 : "+fileName);
-
-        // set expiration
-        Date expiration = new Date();
-        long expTimeMillis = expiration.getTime();
-        expTimeMillis += 1000 * 60 * 60; // 1 hour
-        expiration.setTime(expTimeMillis);
-
-        // Generate the presigned URL.
-        GeneratePresignedUrlRequest generatePresignedUrlRequest =
-                new GeneratePresignedUrlRequest(bucket, (fileName).replace(File.separatorChar, '/'))
-                        .withMethod(HttpMethod.GET)
-                        .withExpiration(expiration);
-
-        return s3Client.generatePresignedUrl(generatePresignedUrlRequest).toString();
-    }
 }
