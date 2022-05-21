@@ -5,9 +5,6 @@ import com.lookatthis.flora.model.Authority;
 import com.lookatthis.flora.model.LoginType;
 import com.lookatthis.flora.model.User;
 import lombok.*;
-import org.locationtech.jts.geom.Point;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotNull;
@@ -21,17 +18,8 @@ import javax.validation.constraints.Size;
 public class UserDto {
 
     @NotNull
-    private String userAddress;
-
-    @NotNull
-    private Double latitude;
-
-    @NotNull
-    private Double longitude;
-
-    @NotNull
     @Size(min = 3, max = 50)
-    private String loginId;
+    private String email;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotNull
@@ -45,20 +33,11 @@ public class UserDto {
     @NotNull
     private String phone;
 
-    private String email;
-
     @NotNull
     private LoginType loginType;
 
-    public User toUser(PasswordEncoder passwordEncoder) throws ParseException {
-        String pointWKT = String.format("POINT(%s %s)", longitude, latitude);
-        Point userPoint = (Point) new WKTReader().read(pointWKT);
+    public User toUser(PasswordEncoder passwordEncoder) {
         return User.builder()
-                .userAddress(userAddress)
-                .userLatitude(latitude)
-                .userLongitude(longitude)
-                .userPoint(userPoint)
-                .loginId(loginId)
                 .password(passwordEncoder.encode(password))
                 .username(username)
                 .phone(phone)

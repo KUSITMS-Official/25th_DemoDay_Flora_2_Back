@@ -11,8 +11,6 @@ import com.lookatthis.flora.repository.RefreshTokenRepository;
 import com.lookatthis.flora.repository.UserRepository;
 import com.lookatthis.flora.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
-//import org.locationtech.jts.geom.Point;
-//import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -88,7 +86,7 @@ public class UserService {
 
     @Transactional
     public User signup(UserDto userDto) throws ParseException {
-        if (userRepository.existsByLoginId(userDto.getLoginId())) {
+        if (userRepository.existsByEmail(userDto.getEmail())) {
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
         }
 
@@ -98,14 +96,14 @@ public class UserService {
 
     // 유저 로그인 아이디 중복 체크
     @Transactional(readOnly = true)
-    public boolean checkIdDuplication(String loginId) {
-        return userRepository.existsByLoginId(loginId);
+    public boolean checkIdDuplication(String email) {
+        return userRepository.existsByEmail(email);
     }
 
     // 현재 SecurityContext 에 있는 유저 정보 조회
     @Transactional(readOnly = true)
     public User getMyInfo() {
-        return userRepository.findByLoginId(SecurityUtil.getCurrentUsername())
+        return userRepository.findByEmail(SecurityUtil.getCurrentUsername())
                 .orElseThrow(() -> new RuntimeException("로그인 유저 정보가 없습니다."));
     }
 
@@ -114,10 +112,10 @@ public class UserService {
 //    public Object update(UserDto userDto) {
 //    }
 
-    // 로그인 아이디로 유저 정보 조회
+    // 이메일로 유저 정보 조회
     @Transactional(readOnly = true)
-    public User getUserInfo(String loginId) {
-        return userRepository.findByLoginId(loginId)
+    public User getUserInfo(String email) {
+        return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("유저 정보가 없습니다."));
     }
 
