@@ -32,7 +32,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.7'
     testImplementation 'org.springframework.security:spring-security-test:5.6.3'
-    compileOnly group: 'org.hibernate', name: 'hibernate-spatial', version: '5.4.32.Final'
+    implementation 'org.hibernate:hibernate-spatial'
     // jwt
     compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
     runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
