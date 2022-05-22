@@ -1,6 +1,17 @@
 package com.lookatthis.flora.model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 public class ChatMessage {
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "chat_message_id")
+    private Long id;
+
     public String message;
     public String fromLogin;
 
