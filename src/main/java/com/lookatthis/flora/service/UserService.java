@@ -123,6 +123,8 @@ public class UserService {
     public void updateAddress(User user, String userAddress, Point userPoint) {
 
         user.setUserAddress(userAddress);
+        user.setUserLatitude(userPoint.getX());
+        user.setUserLongitude(userPoint.getY());
         user.setUserPoint(userPoint);
     }
 
