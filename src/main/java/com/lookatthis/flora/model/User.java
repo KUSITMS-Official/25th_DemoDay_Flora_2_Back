@@ -21,7 +21,6 @@ public class User extends Timestamped {
     @Column(name = "user_id")
     private Long id;
 
-    @JsonIgnore
     @Column(name = "user_address")
     private String userAddress;
 
