@@ -60,7 +60,7 @@ public class Portfolio extends Timestamped {
     private Color color;
 
     @ManyToOne
-    @JoinColumn(name = "flower_shop_id", referencedColumnName = "flower_shop_id")
+    @JoinColumn(name = "flower_shop_id", referencedColumnName = "flower_shop_id", unique = false)
     private FlowerShop flowerShop;
 
     @ManyToOne
