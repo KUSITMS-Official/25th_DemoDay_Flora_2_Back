@@ -35,8 +35,8 @@ public class SearchService {
         if(startPrice == null) startPrice = 0;
         if(endPrice == null) endPrice = Integer.MAX_VALUE;
         if(sort == null) sort = "created_date";
-        Double latitude = user.getUserPoint().getX();
-        Double longitude = user.getUserPoint().getY();
+        Double latitude = user.getUserPoint().getY();
+        Double longitude = user.getUserPoint().getX();
         Flower flower = flowerRepository.findByFlowerName(word);
         if(flower == null) throw new RuntimeException("검색결과가 없습니다.");
         Location northEast = GeometryUtil
@@ -44,10 +44,10 @@ public class SearchService {
         Location southWest = GeometryUtil
                 .calculate(latitude, longitude, distance, Direction.SOUTHWEST.getBearing());
 
-        double x1 = northEast.getLatitude();
-        double y1 = northEast.getLongitude();
-        double x2 = southWest.getLatitude();
-        double y2 = southWest.getLongitude();
+        double x1 = northEast.getLongitude();
+        double y1 = northEast.getLatitude();
+        double x2 = southWest.getLongitude();
+        double y2 = southWest.getLatitude();
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query;
@@ -90,8 +90,8 @@ public class SearchService {
         if(startPrice == null) startPrice = 0;
         if(endPrice == null) endPrice = Integer.MAX_VALUE;
         if(sort == null) sort = "created_date";
-        Double latitude = user.getUserPoint().getX();
-        Double longitude = user.getUserPoint().getY();
+        Double latitude = user.getUserPoint().getY();
+        Double longitude = user.getUserPoint().getX();
         List<FlowerShop> flowerShops = flowerShopRepository.findByFlowerShopAddressContaining(word);
         if(flowerShops.isEmpty()) throw new RuntimeException("검색결과가 없습니다.");
         Location northEast = GeometryUtil
@@ -99,10 +99,10 @@ public class SearchService {
         Location southWest = GeometryUtil
                 .calculate(latitude, longitude, distance, Direction.SOUTHWEST.getBearing());
 
-        double x1 = northEast.getLatitude();
-        double y1 = northEast.getLongitude();
-        double x2 = southWest.getLatitude();
-        double y2 = southWest.getLongitude();
+        double x1 = northEast.getLongitude();
+        double y1 = northEast.getLatitude();
+        double x2 = southWest.getLongitude();
+        double y2 = southWest.getLatitude();
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query;

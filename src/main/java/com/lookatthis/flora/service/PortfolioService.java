@@ -90,10 +90,10 @@ public class PortfolioService {
         Location southWest = GeometryUtil
                 .calculate(latitude, longitude, 5.0, Direction.SOUTHWEST.getBearing());
 
-        double x1 = northEast.getLatitude();
-        double y1 = northEast.getLongitude();
-        double x2 = southWest.getLatitude();
-        double y2 = southWest.getLongitude();
+        double x1 = northEast.getLongitude();
+        double y1 = northEast.getLatitude();
+        double x2 = southWest.getLongitude();
+        double y2 = southWest.getLatitude();
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
@@ -101,7 +101,7 @@ public class PortfolioService {
                         + "p.portfolio_review_count, p.portfolio_review_score, p.portfolio_review_sum, p.discount, p.discount_price "
                         + "FROM flower_shop AS f, portfolio AS p "
                         + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", f.flower_shop_point) AND f.flower_shop_id = p.flower_shop_id "
-                        + "ORDER BY p.clip_count", Portfolio.class)
+                        + "ORDER BY p.clip_count DESC ", Portfolio.class)
                 .setMaxResults(5);
 
         List<Portfolio> portfolios = query.getResultList();
@@ -116,10 +116,10 @@ public class PortfolioService {
         Location southWest = GeometryUtil
                 .calculate(latitude, longitude, 5.0, Direction.SOUTHWEST.getBearing());
 
-        double x1 = northEast.getLatitude();
-        double y1 = northEast.getLongitude();
-        double x2 = southWest.getLatitude();
-        double y2 = southWest.getLongitude();
+        double x1 = northEast.getLongitude();
+        double y1 = northEast.getLatitude();
+        double x2 = southWest.getLongitude();
+        double y2 = southWest.getLatitude();
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query = em.createNativeQuery("SELECT p.portfolio_id, p.portfolio_name, p.portfolio_image, "
@@ -147,10 +147,10 @@ public class PortfolioService {
         Location southWest = GeometryUtil
                 .calculate(latitude, longitude, distance, Direction.SOUTHWEST.getBearing());
 
-        double x1 = northEast.getLatitude();
-        double y1 = northEast.getLongitude();
-        double x2 = southWest.getLatitude();
-        double y2 = southWest.getLongitude();
+        double x1 = northEast.getLongitude();
+        double y1 = northEast.getLatitude();
+        double x2 = southWest.getLongitude();
+        double y2 = southWest.getLatitude();
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query;

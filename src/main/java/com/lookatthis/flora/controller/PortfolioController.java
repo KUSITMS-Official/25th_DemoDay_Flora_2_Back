@@ -4,7 +4,6 @@ import com.lookatthis.flora.dto.*;
 import com.lookatthis.flora.model.Color;
 import com.lookatthis.flora.model.Portfolio;
 import com.lookatthis.flora.model.User;
-import com.lookatthis.flora.service.FlowerShopService;
 import com.lookatthis.flora.service.PortfolioService;
 import com.lookatthis.flora.service.S3Service;
 import com.lookatthis.flora.service.UserService;
@@ -84,7 +83,7 @@ public class PortfolioController {
     public ResponseEntity<?extends ResponseDto> getHotPorftolios() {
         User user = userService.getMyInfo();
         Point point = user.getUserPoint();
-        List<Portfolio> portfolios = portfolioService.getHotPortfolios(point.getX(), point.getY());
+        List<Portfolio> portfolios = portfolioService.getHotPortfolios(point.getY(), point.getX());
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
 
@@ -94,7 +93,7 @@ public class PortfolioController {
     public ResponseEntity<?extends ResponseDto> getDiscountPortfolios() {
         User user = userService.getMyInfo();
         Point point = user.getUserPoint();
-        List<Portfolio> portfolios = portfolioService.getDiscountPortfolios(point.getX(), point.getY());
+        List<Portfolio> portfolios = portfolioService.getDiscountPortfolios(point.getY(), point.getX());
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
 
@@ -108,7 +107,7 @@ public class PortfolioController {
                                                                     @RequestParam(name = "sort", required = false) String sort) {
         User user = userService.getMyInfo();
         Point point = user.getUserPoint();
-        List<Portfolio> portfolios = portfolioService.getFilterPortfolios(point.getX(), point.getY(), distance, color, startPrice, endPrice, sort);
+        List<Portfolio> portfolios = portfolioService.getFilterPortfolios(point.getY(), point.getX(), distance, color, startPrice, endPrice, sort);
         return ResponseEntity.ok().body(new CommonResponseDto<>(portfolios));
     }
 
