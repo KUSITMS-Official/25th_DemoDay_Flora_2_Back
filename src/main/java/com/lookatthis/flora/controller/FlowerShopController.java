@@ -7,14 +7,12 @@ import com.lookatthis.flora.model.FlowerShop;
 import com.lookatthis.flora.model.User;
 import com.lookatthis.flora.service.FlowerShopService;
 import com.lookatthis.flora.service.S3Service;
-import com.lookatthis.flora.service.S3Uploader;
 import com.lookatthis.flora.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,7 +71,7 @@ public class FlowerShopController {
     public ResponseEntity<? extends ResponseDto> getHotFlowerShops() {
         User user = userService.getMyInfo();
         Point point = user.getUserPoint();
-        List<FlowerShop> hotFlowerShops = flowerShopService.getHotFlowerShops(point.getX(), point.getY());
+        List<FlowerShop> hotFlowerShops = flowerShopService.getHotFlowerShops(point.getY(), point.getX());
         return ResponseEntity.ok().body(new CommonResponseDto<>(hotFlowerShops));
     }
 

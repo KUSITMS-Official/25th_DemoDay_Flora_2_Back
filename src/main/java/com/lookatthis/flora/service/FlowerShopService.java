@@ -59,10 +59,10 @@ public class FlowerShopService {
         Location southWest = GeometryUtil
                 .calculate(latitude, longitude, distance, Direction.SOUTHWEST.getBearing());
 
-        double x1 = northEast.getLatitude();
-        double y1 = northEast.getLongitude();
-        double x2 = southWest.getLatitude();
-        double y2 = southWest.getLongitude();
+        double x1 = northEast.getLongitude();
+        double y1 = northEast.getLatitude();
+        double x2 = southWest.getLongitude();
+        double y2 = southWest.getLatitude();
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query = em.createNativeQuery("SELECT * "
@@ -95,15 +95,15 @@ public class FlowerShopService {
         Location southWest = GeometryUtil
                 .calculate(latitude, longitude, 5.0, Direction.SOUTHWEST.getBearing());
 
-        double x1 = northEast.getLatitude();
-        double y1 = northEast.getLongitude();
-        double x2 = southWest.getLatitude();
-        double y2 = southWest.getLongitude();
+        double x1 = northEast.getLongitude();
+        double y1 = northEast.getLatitude();
+        double x2 = southWest.getLongitude();
+        double y2 = southWest.getLatitude();
 
         String pointFormat = String.format("'LINESTRING(%f %f, %f %f)')", x1, y1, x2, y2);
         Query query = em.createNativeQuery("SELECT * "
                         + "FROM flower_shop "
-                        + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) ORDER BY clip_count ", FlowerShop.class)
+                        + "WHERE MBRContains(ST_LINESTRINGFROMTEXT(" + pointFormat + ", flower_shop_point) ORDER BY clip_count DESC ", FlowerShop.class)
                 .setMaxResults(5);
 
         List<FlowerShop> flowerShops = query.getResultList();
