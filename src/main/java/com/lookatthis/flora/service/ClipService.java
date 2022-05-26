@@ -70,4 +70,17 @@ public class ClipService {
         portfolio.setClipCount(portfolio.getClipCount() - 1); // 찜 수 감소
 
     }
+
+    // 사용자 꽃집 찜 여부
+    @Transactional(readOnly = true)
+    public boolean checkUserClipFlowerShop(Long userId, Long flowerShopId) {
+        return clipShopRepository.existsByUserIdAndFlowerShopId(userId, flowerShopId);
+    }
+
+    // 사용자 꽃 상품 찜 여부
+    @Transactional(readOnly = true)
+    public boolean checkUserClipPortfolio(Long userId, Long portfolioId) {
+        return clipItemRepository.existsByUserIdAndPortfolioId(userId, portfolioId);
+    }
+
 }
