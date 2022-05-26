@@ -16,4 +16,6 @@ public interface ClipItemRepository extends JpaRepository<ClipItem, Long> {
     void deleteByUserIdAndPortfolioId(Long userId, Long portfolioId);
 
     List<ClipItem> findAllByUserId(Long userId);
+
+    boolean existsByUserIdAndPortfolioId(Long userId, Long portfolioId);
 }

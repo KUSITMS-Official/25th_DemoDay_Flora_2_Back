@@ -16,4 +16,6 @@ public interface ClipShopRepository extends JpaRepository<ClipShop, Long> {
     Optional<ClipShop> findByUserIdAndFlowerShopId(Long userId, Long flowerShopId);
 
     List<ClipShop> findAllByUserId(Long userId);
+
+    boolean existsByUserIdAndFlowerShopId(Long userId, Long flowerShopId);
 }

@@ -87,4 +87,24 @@ public class ClipController {
 
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    // 사용자 찜 목록 가게별로 조회
+
+    // 사용자 꽃집 찜 여부 조회
+    @ApiOperation(value = "사용자 꽃찝 찜 여부 조회")
+    @GetMapping("/shop/check/{flowerShopId}")
+    public ResponseEntity<Boolean> checkUserClipFlowerShop(@PathVariable Long flowerShopId) {
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(clipService.checkUserClipFlowerShop(user.getId(), flowerShopId));
+    }
+
+    // 사용자 꽃 상품 찜 여부 조회
+    @ApiOperation(value = "사용자 꽃 상품 찜 여부 조회")
+    @GetMapping("/item/check/{portfolioId}")
+    public ResponseEntity<Boolean> checkUserClipPortfolio(@PathVariable Long portfolioId) {
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok(clipService.checkUserClipPortfolio(user.getId(), portfolioId));
+    }
+
+
 }
